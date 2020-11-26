@@ -1,0 +1,168 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Chapter 0</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+	</head>
+	<body class="is-preload">
+
+		<!-- Wrapper -->
+			<div id="wrapper">
+                
+				<!-- Nav -->
+                <nav id="nav">
+                    <ul class="links">
+                        <li class="active"><a href="index.html">文章</a></li>
+                    </ul>
+                    <ul class="icons">
+                        <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
+                        <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
+                    </ul>
+                </nav>
+
+				<!-- Main -->
+					<div id="main">
+
+						<!-- Post -->
+							<section class="post">
+								<header class="major">
+									<h1>绪论——频率派与贝叶斯派</h1>
+								</header>
+
+								<p>
+									频率派与贝叶斯派的区分由来已久，归根结底在于两派对于“不确定性”的不同看法。
+								</p>
+
+								<p>
+									假设有 \(N\) 个样本，而每个样本的维度为 \(P\) ，则自然会想到一个矩阵：
+								</p>
+
+								<div id="expression">
+									\(
+										X = \left(\begin{array}{cc} x_1 & x_2 & x_3 & \cdots & x_N \end{array}\right)^T
+										= \left(\begin{array}{cc} x_{1,1} & x_{1,2} & x_{1,3} & \cdots & x_{1,P}\\
+																	x_{2,1} & x_{2,2} & x_{2,3} & \cdots & x_{2,P}\\
+																	x_{3,1} & x_{3,2} & x_{3,3} & \cdots & x_{3,P}\\
+																	\vdots  & \vdots  & \vdots  & \ddots & \vdots \\
+																	x_{N,1} & x_{N,2} & x_{N,3} & \cdots & x_{N,P}\\
+												\end{array}\right)
+									\)
+								</p>
+
+								<p>
+									我们假设 \(X \sim P( X | \theta )\) ，可以说两派分歧就在这个 \(\theta\) 上。
+								</p>
+
+								<h4>一、频率派</h4>
+
+								<p>
+									从一个角度来看，频率派似乎并不关注参数空间中所有的值，他们相信所有的值都是在“某个”参数值的作用下产生的。因此他们的方法论致力于寻找“最有可能是真实值”的那个值。另一方面，频率派关注事件，他们认为某事件A在独立重复试验中出现的频率趋近于p，那么p就是该事件的概率。我们只是在寻找随机事件背后主导它们的客观规律。
+								</p>
+
+								<p>
+									以上面的样本为例，频率派认为 \(\theta\) 是一个未知的常量，而 \(X 是随机变量。我们要找到最有可能是 \theta\) 的值（也就是 \(\theta\) 的估计 \(\widehat{\theta}\)) 。常用的手段是最大似然估计（Maximum Likelihood Estimation, MLE）。
+								</p>
+
+								<p>
+									<div id="expression">
+										\(\widehat{\theta}_{MLE} = maxln P( X | \theta ) \)，
+									</div>
+								</p>
+
+								<p>由于
+									<div id="expression">\(x_i \stackrel{i.i.d.}{\sim} p( x_i | \theta )\)，</div>
+								</p>
+
+								<p>得到
+									<div id="expression">
+										\(P = (X|\theta) = \prod_{i = 1}^N p( x_i | \theta )\)
+									</div>
+								</p>
+								<p>取对数，得到似然函数
+									<div id="expression">
+										\(L(\theta)=\sum_{i=1}^N ln p( x_i | \theta )\)
+									</div>
+								</p>
+
+								<p>
+									我们发现，频率派的问题会走向统计机器学习。我们面临的是优化问题：\(设计模型\to设计损失函数\to具体算法（比如梯度下降算法）\)。
+								</p>
+
+								<h4>二、贝叶斯派</h4>
+
+								<p>
+									与频率派相对的，从上文提到的前一个角度来看，贝叶斯学派关心参数空间中每一个值，他们认为我们既然没有上帝视角，又怎么知道哪个值是真的呢？所以他们认为每个值都有可能是真实的，区别只是在概率大小而已。而从另一个角度来看，贝叶斯派侧重于观测者，他们不把随机事件当作客观规律作用下随机出现的事件，而认为随机事件的随机性来源于观察者的局限性。受局限的观察者试图用猜的方式获取未知的信息，我们要找到最好的猜谜方式。
+								</p>
+
+								<p>
+									同样针对上面的例子，贝叶斯派认为 \(\theta\) 是一个随机变量，且 \(\theta \sim p_{prior}(\theta)\) 。prior即先验，与后验（posterior）相对。先验分布与后验分布是贝叶斯派的重要工具。
+								</p>
+
+								<p>
+									先验与后验的桥梁，即著名的贝叶斯定理：
+									<div id="expression">
+										\(P_{posterior}(\theta|X) = \frac{P(X|\theta)P_{prior}(\theta)}{P(X)}  \propto P(X|\theta)P_{prior}(\theta)\)
+									</div>
+								</p>
+
+								<p>
+									其中\(P(X|\theta)\)为\(\theta\)的似然，\(P(X) = \int_\theta P(X|\theta)P(\theta)\ {\rm d}\theta \)。
+								</p>
+								
+								<p>
+									容易得到贝叶斯估计
+									<div id="expression">
+										\(p(\theta|X) = \frac{P(X|\theta)p(\theta)}{\int_\theta P(X|\theta)P(\theta)\ {\rm d}\theta}\)
+									</div>
+								</p>
+
+								<p>
+									通过贝叶斯估计，我们可以引入贝叶斯预测。假设除了已知样本\(X\)外，我们获得了新样本\(\widetilde x\)。那么就有
+									<div id="expression">
+										\(p(\widetilde x|X) = \int_\theta p(\widetilde x, \theta | X){\rm d}\theta = \int_\theta p( \widetilde x| \theta )p(\theta|X ){\rm d}\theta \)
+
+									</div>
+								</p>
+
+								<p>
+									通过对贝叶斯估计的改动，我们还得到最大后验概率（maximum a posteriori probability，MAP），这其实不是标准的贝叶斯方法
+									<div id="expression">
+										\(\widehat\theta_{MAP} =  \underset\theta{argmax} P(\theta|X) = \underset\theta{argmax} P(X|\theta)P_{prior}(\theta)\) 
+									</div>
+								</p>
+
+								<p>
+									从贝叶斯派角度看，我们面对的问题本质是求积分，不论是解析解还是数值解（比如用蒙特卡罗方法求解）。
+								</p>
+
+			</div>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				p{
+					text-indent: 2em;
+				}
+
+				#expression{
+					text-align:center;
+				}
+			</style>
+	</body>
+</html>
