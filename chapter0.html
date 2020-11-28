@@ -16,17 +16,6 @@
 
 		<!-- Wrapper -->
 			<div id="wrapper">
-                
-				<!-- Nav -->
-                <nav id="nav">
-                    <ul class="links">
-                        <li class="active"><a href="index.html">文章</a></li>
-                    </ul>
-                    <ul class="icons">
-                        <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span class="label">Twitter</span></a></li>
-                        <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span class="label">GitHub</span></a></li>
-                    </ul>
-                </nav>
 
 				<!-- Main -->
 					<div id="main">
@@ -143,6 +132,12 @@
 									从贝叶斯派角度看，我们面对的问题本质是求积分，不论是解析解还是数值解（比如用蒙特卡罗方法求解）。
 								</p>
 
+								<ul class="actions">
+									<li>
+										<a href="index.html" class="button">回到首页</a>
+									</li>
+								</ul>
+
 			</div>
 
 		<!-- Scripts -->
@@ -153,11 +148,15 @@
 			<script src="assets/js/breakpoints.min.js"></script>
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
 			<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
 		
 			<style>
-				p{
-					text-indent: 2em;
+
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
 				}
 
 				#expression{
