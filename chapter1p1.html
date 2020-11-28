@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>Chapter 0</title>
+    <title>Chapter 1</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="assets/css/main.css" />
@@ -44,7 +44,9 @@
 
                 <p>
                     如果有数据
-                    \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
+                    <div id = "overflow">
+                        \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
+                    </div>
                     与对应的值
                     \[Y = \begin{pmatrix}y_1&y_2&y_3&\cdots&y_N\end{pmatrix}^T\tag{1}\]
                     对这组数据进行线性拟合，即找到一条直线
@@ -52,14 +54,18 @@
                     最小二乘估计（least square estimation）是最简单的模型之一。其损失函数为欧几里德范数求和
                     \[L(w) = \sum_{i=1}^N ||w^Tx_i-y_i||_2^2 \tag{3}\]
                     下面我们尝试将其改写为矩阵形式
-                    \[\begin{aligned}L(w) &=\sum_{i=1}^N(w^Tx_i-y_i)^2\\&=\begin{pmatrix}w^Tx_1-y_1&w^Tx_2-y_2&w^Tx_3-y_3&\cdots&w^Tx_N-y_N\end{pmatrix}\begin{pmatrix}w^Tx_1-y_1\\w^Tx_2-y_2\\w^Tx_3-y_3\\\vdots\\w^Tx_N-y_N\end{pmatrix} \\&=(W^TX^T-Y^T)(XW-Y)\\&=W^TX^TXW-2W^TX^TY+Y^TY\end{aligned}\]
+                    <div id="overflow">
+                        \[\begin{aligned}L(w) &=\sum_{i=1}^N(w^Tx_i-y_i)^2\\&=\begin{pmatrix}w^Tx_1-y_1&w^Tx_2-y_2&w^Tx_3-y_3&\cdots&w^Tx_N-y_N\end{pmatrix}\begin{pmatrix}w^Tx_1-y_1\\w^Tx_2-y_2\\w^Tx_3-y_3\\\vdots\\w^Tx_N-y_N\end{pmatrix} \\&=(W^TX^T-Y^T)(XW-Y)\\&=W^TX^TXW-2W^TX^TY+Y^TY\end{aligned}\]
+                    </div>
                     我们要求的\(\hat W\)，即
                     \[\hat W = arg\underset W minL(W)\tag{4}\]
                     自然，我们要对\(w\)求导
                     \[\frac{\partial L(W)}{\partial W} = 2X^TXW-2X^TY\]
                     这就是W的解析解。\[{(X^TX)^{-1}X^T}\]被称作伪逆。<br><br>
                     若要了解最小二乘法的几何意义，我们需要回到开头提到的数据矩阵
-                    \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
+                    <div id = "overflow">
+                        \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
+                    </div>
                     若改变审视这个矩阵的方式，我们发现，我们看到了一个由一组列向量张成的\(p\)维子空间，不妨称为\(\alpha\)。而通常情况下，\(Y\)不会在\(\alpha\)中（如果这么巧的话，我们会很开心的）。我们做的线性拟合，就是做一条直线，使得\(Y\)与\(\alpha\)的距离最近。
                     那么改写\((2)\)式
                     \[f(w)=w^Tx=x^T\beta \tag{6}\]
@@ -108,6 +114,10 @@
 					right: 0;
 					margin: auto
 				}
+
+                #overflow{
+                    overflow: auto;
+                }
 			</style>
 	</body>
 </html>
