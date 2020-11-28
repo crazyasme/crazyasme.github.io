@@ -57,12 +57,14 @@
                     \[\hat W = arg\underset W minL(W)\tag{4}\]
                     自然，我们要对\(w\)求导
                     \[\frac{\partial L(W)}{\partial W} = 2X^TXW-2X^TY\]
-                    这就是W的解析解。\[{(X^TX)^{-1}X^T}\]被称作伪逆。
+                    这就是W的解析解。\[{(X^TX)^{-1}X^T}\]被称作伪逆。<br><br>
                     若要了解最小二乘法的几何意义，我们需要回到开头提到的数据矩阵
                     \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
                     若改变审视这个矩阵的方式，我们发现，我们看到了一个由一组列向量张成的\(p\)维子空间，不妨称为\(\alpha\)。而通常情况下，\(Y\)不会在\(\alpha\)中（如果这么巧的话，我们会很开心的）。我们做的线性拟合，就是做一条直线，使得\(Y\)与\(\alpha\)的距离最近。
                     那么改写\((2)\)式
                     \[f(w)=w^Tx=x^T\beta \tag{6}\]
+                    容易看出法向量\(Y-X^T\beta\)。因为\(Y-X^T\beta\)为\(\alpha\)的法向量，所以有
+                    \[X^T(Y-X\beta)=0\]
                     解得
                     \[\beta={(X^T)X}^{-1}X^TY \tag{7}\]
                     我们发现，\((7)\)式与\((5)\)式殊途同归。<br><br>
