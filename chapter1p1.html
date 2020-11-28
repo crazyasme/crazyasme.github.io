@@ -17,7 +17,7 @@
 
 <body class="is-preload">
 
-    <!-- Wrapper -->
+    <!-- wrapper -->
     <div id="wrapper">
 
         <!-- Nav -->
@@ -55,13 +55,13 @@
                     \[L(w) = \sum_{i=1}^N ||w^Tx_i-y_i||_2^2 \tag{3}\]
                     下面我们尝试将其改写为矩阵形式
                     <div id="overflow">
-                        \[\begin{aligned}L(w) &=\sum_{i=1}^N(w^Tx_i-y_i)^2\\&=\begin{pmatrix}w^Tx_1-y_1&w^Tx_2-y_2&w^Tx_3-y_3&\cdots&w^Tx_N-y_N\end{pmatrix}\begin{pmatrix}w^Tx_1-y_1\\w^Tx_2-y_2\\w^Tx_3-y_3\\\vdots\\w^Tx_N-y_N\end{pmatrix} \\&=(W^TX^T-Y^T)(XW-Y)\\&=W^TX^TXW-2W^TX^TY+Y^TY\end{aligned}\]
+                        \[\begin{aligned}L(w) &=\sum_{i=1}^N(w^Tx_i-y_i)^2\\&=\begin{pmatrix}w^Tx_1-y_1&w^Tx_2-y_2&w^Tx_3-y_3&\cdots&w^Tx_N-y_N\end{pmatrix}\begin{pmatrix}w^Tx_1-y_1\\w^Tx_2-y_2\\w^Tx_3-y_3\\\vdots\\w^Tx_N-y_N\end{pmatrix} \\&=(w^TX^T-Y^T)(Xw-Y)\\&=w^TX^TXw-2w^TX^TY+Y^TY\end{aligned}\]
                     </div>
-                    我们要求的\(\hat W\)，即
-                    \[\hat W = arg\underset W minL(W)\tag{4}\]
+                    我们要求的\(\hat w\)，即
+                    \[\hat w = arg\underset w minL(w)\tag{4}\]
                     自然，我们要对\(w\)求导
-                    \[\frac{\partial L(W)}{\partial W} = 2X^TXW-2X^TY\]
-                    这就是W的解析解。\[{(X^TX)^{-1}X^T}\]被称作伪逆。<br><br>
+                    \[\frac{\partial L(w)}{\partial w} = 2X^TXw-2X^TY\]
+                    这就是w的解析解。\[{(X^TX)^{-1}X^T}\]被称作伪逆。<br><br>
                     若要了解最小二乘法的几何意义，我们需要回到开头提到的数据矩阵
                     <div id = "overflow">
                         \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix}x_1^T\\x_2^T\\x_3^T\\\vdots\\x_N^T\end{pmatrix} = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}\]
@@ -86,7 +86,7 @@
                     \[y|x;w \sim N(w^Tx,\sigma^2）\\P(y|x;w) = \frac{1}{\sqrt{2\pi}\sigma}exp\{\frac{{(y-w^Tx)}^2}{2\sigma^2}\} \tag{9}\]
                     接下来可以使用MLE
                     \[\begin{aligned}L(w) &= lnP(Y|X;w)\\ &= ln\prod_{i=1}^NP(y_i|x_i;w)\\ &= \sum_{i=1}{N}lnP(y_i|x_i;w)\\ &=\sum_{i=1}^N(ln\frac{1}{\sqrt{2\pi}\sigma}-\frac{{(y-w^Tx)}^2}{2\sigma^2})\end{aligned}\]
-                    \[\begin{aligned}\hat W_{MLE} &= arg\underset W max L(w)\\&=arg\underset W max\sum_{i=1}^{N}-\frac{{(y_i-w^Tx_i)}^2}{2\sigma^2}\\&=arg\underset W min\sum_{i=1}^{N}{(y_i-w^Tx_i)}^2\end{aligned}\tag{10}\]
+                    \[\begin{aligned}\hat w_{MLE} &= arg\underset w max L(w)\\&=arg\underset w max\sum_{i=1}^{N}-\frac{{(y_i-w^Tx_i)}^2}{2\sigma^2}\\&=arg\underset w min\sum_{i=1}^{N}{(y_i-w^Tx_i)}^2\end{aligned}\tag{10}\]
                     而\((10)\)式中的\(\sum_{i=1}^{N}{(y_i-w^Tx_i)}^2\)即为欧几里德范数，与\((3)\)式相同。
 
                 </p>

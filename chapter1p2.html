@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 1</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>线性回归——正则化、岭回归</h1>
+                </header>
+
+                <p>
+                    在最小二乘法一篇中，我们得到了
+                    \[\hat w={(X^TX)}^{-1}X^TY \tag{1}\]
+                    然而\((1)\)并不能适用于现实中的所有情况，在实际操作中，我们有时会遇到这样的情况：样本太少，而样本的维度过多，以至于\(X^TX\)不满秩，导致其不可逆，从数学上我们无法得出这个解析解，从需求上，过少的样本容易导致过拟合。也可以说，高维统计分析模型通常是稀疏模型，真正起作用的变量只占一小部分，其余都为噪声。为了解决这个问题，我们大概有三种选择：
+                    <ul>
+                        <li>增加数据</li>
+                        <li>特征选择/特征提取（如主成分分析，principal component analysis，PCA），这种方法我们将在之后介绍</li>
+                        <li>正则化，其目的是约束误差函数，同时也有提高模型泛化能力（避免过拟合）的效果</li>
+                    </ul>
+                    本篇主要介绍正则化。其框架如下
+                    \[\hat w = arg \underset W min(L(w)+\lambda P(w)) \tag{2}\]
+                    其中\(L(W)\)为损失函数，\(P(W)\)是正则化项（regularizer）或者惩罚项（penalty item）。常见的惩罚函数形式有三种，我们称为\(L_0\)、\(L_1\)和\(L_2\)。其通式为
+                    \[L_p = ||\beta||_p = {(|\beta_1|^p+|\beta_2|^p+|\beta_3|^p+\cdots+|\beta^p|)}^{1/p}\]
+                    即\(L_p\)对应向量的\(p\)-范数。<br><br>
+
+                    分开来看，\(L_0\)表示向量中非\(0\)元素的个数，使用\(L_0\)的目的即希望\(w\)是稀疏的；\(L_1\)是向量中各系数绝对值之和，我们又叫他Lasso；\(L_2\)则是向量中各系数平方和的平方根，在计量经济学里，他又叫岭回归（ridge regression）或者吉洪诺夫正则化（Tikhonov regularization）或者权值衰减（weight decay），权值衰减会联系到神经网络，之后会提到。本篇的重点放在岭回归上。
+                    将\(L_2\)代入\((2)\)式中\(argmin\)内的部分（不妨记作\(F(W)\)），\(L(W)\)部分的推导已在上一篇给出。
+                    \[\begin{aligned}F(w)=&\sum_{i=1}^{N}{||w^Tx_i-y_i||}^2+\lambda {||w||}^2 \\ =&w^TX^TXw-2w^TX^TY+Y^TY+\lambda w^Tw\\=&w^T(X^TX+\lambda I)w-2w^TX^TY+Y^TY\end{aligned}\]
+                    令右边为0，解得
+                    \[\hat w = {(X^TX+\lambda I)}^{-1}X^TY \tag{3}\]
+                    其中\[X^TX+\lambda I\]为正定矩阵，此时已经是可逆的了。<br><br>
+                    这是从频率派的角度来看，此时我们认为\(W\)是客观存在的常量。我们当然也可以从贝叶斯派角度看待这个问题。<br><br>
+                    首先我们给\(w\)一个先验
+                    \[w \sim N(0,\sigma_0^2)\\P(w)=\frac{1}{\sqrt{2\pi}\sigma_0}exp{{(-\frac{{||w||}^2}{2\sigma_0^2})}}\]
+                    由于\(y=w^Tx+\epsilon\)，而在我们的假设里
+                    \[\epsilon \sim N(0,\sigma^2)\]
+                    于是有
+                    \[P(y|w)=\frac{1}{\sqrt{2\pi}\sigma}exp{{(-\frac{{(y-w^Tx)}^2}{2\sigma^2})}}\]
+                    根据贝叶斯公式
+                    \[P(w|y)=\frac{P(y|w)P(w)}{P(y)}\]
+                    \(P(y)\)与\(w\)无关，在使用MAP的时候我们可以不用考虑
+                    \[\begin{aligned}\hat w_{MAP} &=arg\underset w max P(Y|w)P(w) \\&= arg\underset w max logP(Y|w)P(w)\\&=arg\underset w min[{(y-w^Tx)}^2+\frac{\sigma^2}{\sigma_0^2}w^Tw]\end{aligned}\tag{4}\]
+                    \((4)\)式和我们的定义式\((2)\)式其实是一样的。可见从贝叶斯派角度，我们都可以得到
+                    <div id="overflow">
+                        \[Regularized \quad LSE \iff MLE  \\(noise\quad and \quad prior \quad is \quad Gaussian \quad distribution)\]
+                    </div>
+
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+			</style>
+	</body>
+</html>

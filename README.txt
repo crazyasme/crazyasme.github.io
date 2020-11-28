@@ -1,1 +1,1 @@
-Hello World
+Thanks to Mathjax and HTML5
