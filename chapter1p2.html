@@ -59,7 +59,7 @@
 
                     分开来看，\(L_0\)表示向量中非\(0\)元素的个数，使用\(L_0\)的目的即希望\(w\)是稀疏的；\(L_1\)是向量中各系数绝对值之和，我们又叫他Lasso；\(L_2\)则是向量中各系数平方和的平方根，在计量经济学里，他又叫岭回归（ridge regression）或者吉洪诺夫正则化（Tikhonov regularization）或者权值衰减（weight decay），权值衰减会联系到神经网络，之后会提到。本篇的重点放在岭回归上。
                     将\(L_2\)代入\((2)\)式中\(argmin\)内的部分（不妨记作\(F(W)\)），\(L(W)\)部分的推导已在上一篇给出。
-                    \[\begin{aligned}F(w)=&\sum_{i=1}^{N}{||w^Tx_i-y_i||}^2+\lambda {||w||}^2 \\ =&w^TX^TXw-2w^TX^TY+Y^TY+\lambda w^Tw\\=&w^T(X^TX+\lambda I)w-2w^TX^TY+Y^TY\end{aligned}\]
+                    \[\begin{aligned}F(w)=&\sum_{i=1}^{N}{||w^Tx_i-y_i||}^2+\lambda {||w||}_2^2 \\ =&w^TX^TXw-2w^TX^TY+Y^TY+\lambda w^Tw\\=&w^T(X^TX+\lambda I)w-2w^TX^TY+Y^TY\end{aligned}\]
                     令右边为0，解得
                     \[\hat w = {(X^TX+\lambda I)}^{-1}X^TY \tag{3}\]
                     其中\[X^TX+\lambda I\]为正定矩阵，此时已经是可逆的了。<br><br>
@@ -74,9 +74,9 @@
                     \[P(w|y)=\frac{P(y|w)P(w)}{P(y)}\]
                     \(P(y)\)与\(w\)无关，在使用MAP的时候我们可以不用考虑
                     \[\begin{aligned}\hat w_{MAP} &=arg\underset w max P(Y|w)P(w) \\&= arg\underset w max logP(Y|w)P(w)\\&=arg\underset w min[{(y-w^Tx)}^2+\frac{\sigma^2}{\sigma_0^2}w^Tw]\end{aligned}\tag{4}\]
-                    \((4)\)式和我们的定义式\((2)\)式其实是一样的。可见从贝叶斯派角度，我们都可以得到
+                    \((4)\)式和我们的定义式\((2)\)式其实是一样的。可见从贝叶斯派角度，我们可以得到
                     <div id="overflow">
-                        \[Regularized \quad LSE \iff MLE  \\(noise\quad and \quad prior \quad is \quad Gaussian \quad distribution)\]
+                        \[Regularized \quad LSE \iff MAP  \\(noise\quad and \quad prior \quad is \quad Gaussian \quad distribution)\]
                     </div>
 
                 </p>
