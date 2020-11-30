@@ -84,9 +84,9 @@
                     \[f({\rm x})=f({\rm x_0})+\nabla f({\rm x_0})({\rm x-x_0})+\frac 1 2 ({\rm x-x_0})^TH({\rm x-x_0})+O({|\rm x-x_0}|^3)\]
                     其中\(H\)为Hessian矩阵，当\(\rm x_0\)为临界点，且\(H\)为正定矩阵，\(f(\rm x)\)在\(\rm x_0\)处取得极小值。<br><br>
                     梯度下降法的思路很简单，梯度的方向为函数增大最快的方向，则梯度的反方向即为函数减小最快的方向。若要求函数的极小值，我们可以选取一个初始点\({\rm x^{(0)}}=(x_1^{(0)},x_2^{(0)},x_3^{(0)}\cdots x_n^{(0)})\)，基于学习率\(\eta>0\)构建一个迭代过程，当\(i\ge 0\)
-                    \[x_1^{(i+1)}=x_1^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_1}\\ \vdots\\x_n^{(i+1)}=x_n^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_n}\]
+                    \[x_1^{(i+1)}=x_1^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_1}\] \[ \vdots \] \[x_n^{(i+1)}=x_n^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_n}\]
                     同理，如果要求函数的极大值，只需要将方向反过来
-                    \[x_1^{(i+1)}=x_1^{(i)}+\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_1}\\ \vdots\\x_n^{(i+1)}=x_n^{(i)}+\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_n}\]
+                    \[x_1^{(i+1)}=x_1^{(i)}+\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_1}\] \[\vdots \] \[x_n^{(i+1)}=x_n^{(i)}+\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_n}\]
                     这种方法被称为批量梯度下降（Batch Gradient Descent，BGD），这种方法利用了全数据集，当目标函数为凸函数时，一定能实现全局最优。然而正因为其用到了全部数据，每次迭代都需要对所有样本计算，训练效率低。<br><br>
                     因此随机梯度下降（Stochastic Gradient Descent，SGD）应运而生，这种方法并不使用全部数据，而是在每次迭代前随机选取一个样本对参数进行更新，大大提高了效率。然而其劣势也很明显，因为没有用到全部数据，准确度有所下降，且存在收敛到局部最优而不是全局最优的可能性。因为每次只用到一个样本，并行效率低。<br><br>
                     批量梯度下降（Mini-Batch Gradient Descent，MBGD）综合了以上两种方法的特点，每次迭代前随机选取一小批数据对参数进行更新。在略微舍弃效率的情况下提高了准确度，也提高了并行效率。<br><br>
