@@ -81,7 +81,7 @@
                     对于多元函数\(f({\rm x})=f(x_1,x_2,x_3\cdots x_n)\)，我们可求得其梯度为
                     \[\nabla f({\rm x})=(\frac{\partial f({\rm x})}{\partial x_1},\frac{\partial f({\rm x})}{\partial x_2},\frac{\partial f({\rm x})}{\partial x_3}\cdots \frac{\partial f({\rm x})}{\partial x_n})\]
                     在点\(\rm x_0\)上的Talor级数为
-                    f({\rm x})=f({\rm x_0})+\nabla f({\rm x_0})({\rm x-x_0})+\frac 1 2 ({\rm x-x_0})^TH({\rm x-x_0})+O({|\rm x-x_0}|^3)
+                    \[f({\rm x})=f({\rm x_0})+\nabla f({\rm x_0})({\rm x-x_0})+\frac 1 2 ({\rm x-x_0})^TH({\rm x-x_0})+O({|\rm x-x_0}|^3)\]
                     其中\(H\)为Hessian矩阵，当\(\rm x_0\)为临界点，且\(H\)为正定矩阵，\(f(\rm x)\)在\(\rm x_0\)处取得极小值。<br><br>
                     梯度下降法的思路很简单，梯度的方向为函数增大最快的方向，则梯度的反方向即为函数减小最快的方向。若要求函数的极小值，我们可以选取一个初始点\({\rm x^{(0)}}=(x_1^{(0)},x_2^{(0)},x_3^{(0)}\cdots x_n^{(0)})\)，基于学习率\(\eta>0\)构建一个迭代过程，当\(i\ge 0\)
                     \[x_1^{(i+1)}=x_1^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_1}\\ \vdots\\x_n^{(i+1)}=x_n^{(i)}-\eta \frac{\partial f({\rm x^{(i)}})}{\partial x_n}\]
