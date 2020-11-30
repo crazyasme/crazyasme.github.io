@@ -69,12 +69,12 @@
                     超平面（Hyperplane），即空间\(R^d\)中的一个子空间\(R^{d-1}\)。<br><br>
                     设直线方程为\(Ax+By+C=0\)，任一点\(P(x_0,y_0)\)，点到直线的距离为
                     \[d=\frac{Ax_0+By_0+C}{\sqrt{A^2+B^2}}\]
-                    设超平面\（h=wx+b\)，其中\(w=(w_1,w_2,w_3\cdots w_m)\)，\(x=(x_1,x_2,x_3\cdots x_m)\)，则样本点\(x'\)到超平面的距离为
+                    设超平面\(h=wx+b\)，其中\(w=(w_1,w_2,w_3\cdots w_m)\)，\(x=(x_1,x_2,x_3\cdots x_m)\)，则样本点\(x'\)到超平面的距离为
                     \[d=\frac{w^Tx'+b}{{||w||}_1}\]
                     感知机的模型为
-                    \[f(x)=sign(w^Tx+b)\\sign(x）=\left \{ \begin{aligned}-1\quad x<0\\1 \quad x>0\end{aligned}\right. \tag{2}\]
+                    <div id="overflow">\[f(x)=sign(w^Tx+b)\\sign(x）=\left \{ \begin{aligned}-1\quad x<0\\1 \quad x>0\end{aligned}\right. \tag{2}\]</div>
                     损失函数被设定为被错误分类点的个数
-                    \[L(w,b)=-\sum_{i=1}^NI（\frac{y_i(w^Tx_i+b)}{{||w||}_1}）\\I(\frac{y_i(w^Tx_i+b)}{{||w||}_1})=\left \{\begin{aligned}1\quad \frac{y_i(w^Tx_i+b)}{{||w||}_1}<0\\0\quad \frac{y_i(w^Tx_i+b)}{{||w||}_1}>0\end{aligned}\right.\]
+                    <div id="overflow">\[L(w,b)=-\sum_{i=1}^NI（\frac{y_i(w^Tx_i+b)}{{||w||}_1}）\\I(\frac{y_i(w^Tx_i+b)}{{||w||}_1})=\left \{\begin{aligned}1\quad \frac{y_i(w^Tx_i+b)}{{||w||}_1}<0\\0\quad \frac{y_i(w^Tx_i+b)}{{||w||}_1}>0\end{aligned}\right.\]</div>
                     我们的优化目标即使各点到超平面的距离和最小。我们注意到，\frac{1}{{||w||}_1}不影响正负的判定，因此我们可以选择将它忽略，这还有简化计算的作用
                     \[L(w,b)=-\sum_{i=1}^NI(y_i(w^Tx_i+b))\]
                     我们的目标是对以上函数极小化，并求得此时的\(w\)与\(b\)。这个函数我们无法求得解析解（这甚至是个NP hard问题），因此我们需要引入新的方法——梯度下降法（Gradient Descent）。<br><br>
