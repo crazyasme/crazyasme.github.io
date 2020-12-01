@@ -69,17 +69,21 @@
                     当\((1)\)式取得最大值，即是分母最小分子最大时，因此
                     \[\hat w_{LDA}=arg\underset w max J(w)\tag{2}\]
                     为了计算需要，我们可以将\((1)\)式化简。先来看分子
-                    \[\begin{aligned}分子&=(\frac{1}{N_1}\sum_{i=1}^{N_1}w^Tx_i-\frac{1}{N_2}\sum_{i=1}^{N_2}w^Tx_i)^2\\&=(w^T(\bar x_1-\bar x_2))^2\\&=w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw\end{aligned}\tag{3}\]
+                    <div id="overflow">
+                        \[\begin{aligned}分子&=(\frac{1}{N_1}\sum_{i=1}^{N_1}w^Tx_i-\frac{1}{N_2}\sum_{i=1}^{N_2}w^Tx_i)^2\\&=(w^T(\bar x_1-\bar x_2))^2\\&=w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw\end{aligned}\tag{3}\]
+                    </div>
                     然后看分母，首先我们需要化简\(S_1\)与\(S_2\)，两者形式相同，此处只写\(S_1\)
                     \[\begin{aligned}S_1&=\frac{1}{N_1}\sum_{i=1}^{N_1}(w^Tx_i-\bar z_1)(w^Tx_i-\bar z_1)^T\\&=w^T(\frac{1}{N_1}(x_i-\bar x_{c1})(x_i-\bar x_{c1})^T)w\\&=w^TS_{C_1}w\end{aligned}\]
                     于是有
                     \[分母=w^T(S_{C_1}+S_{C_2})w\tag{4}\]
                     综合\((2)\)、\((3)\)式，\((1)\)式可化简为
-                    J(w)=\frac{w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw}{w^T(S_{C_1}+S_{C_2})w}\tag{5}
+                    \[J(w)=\frac{w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw}{w^T(S_{C_1}+S_{C_2})w}\tag{5}\]
                     了解广义瑞利商的读者能够快速发现处理\((5)\)式的方式，我们这里仍然采用计算的方法。<br><br>
                     我们将\((\bar x_1-\bar x_2)(\bar x_1 - \bar x_2)^T\)称为类间（Between-class）散度矩阵，记作\(S_b\)；将\(S_{C_1}+S_{C_2}\)称为类内（Within-class）散度矩阵，记作\(S_w\)。<br><br>
                     自然地，对\(J(w)\)求偏导
-                    \[\frac{\partial J(w)}{\partial w}=2S_bw(w^TS_ww)^{-1}-2w^TS_bw(w^TS_bw)^{-2}S_ww\tag{6}\]
+                    <div id="overflow">
+                        \[\frac{\partial J(w)}{\partial w}=2S_bw(w^TS_ww)^{-1}-2w^TS_bw(w^TS_bw)^{-2}S_ww\tag{6}\]
+                    </div>
                     令\((6)\)为\(0\)
                     \[S_bw(w^TS_ww)=w^TS_bwS_ww\]
                     通过对上式中向量维数的分析，不难发现\(w^TS_ww, w^TS_bw\in R\)，于是得到
