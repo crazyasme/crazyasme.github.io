@@ -89,7 +89,8 @@
                     通过对上式中向量维数的分析，不难发现\(w^TS_ww, w^TS_bw\in R\)，于是得到
                     \[S_ww=\frac{w^TS_ww}{w^TS_bw}S_bw\]
                     我们并不关心\(w\)的大小，只关心其方向，因为\(w^TS_ww\)和\(w^TS_bw\)都是正实数，对方向毫无影响，因此我们得到
-                    \[w\propto S_w^{-1}S_bw\\\begin{aligned}S_w^{-1}Sbw&=S_w(\bar x_1-\bar x_2)(\bar x_1 - \bar x_2)^Tw\end{aligned}\]
+                    \[w\propto S_w^{-1}S_bw\]
+                    \[\begin{aligned}S_w^{-1}Sbw&=S_w(\bar x_1-\bar x_2)(\bar x_1 - \bar x_2)^Tw\end{aligned}\]
                     同样通过分析维度，我们发现\((\bar x_1-\bar x_2)^Tw \in R\)，因此最终得到
                     \[w\propto S_w^{-1}(\bar x_1-\bar x_2)\tag{7}\]
                     也就是说，要想求得最佳投影方向\(w\)，我们只需要求得原始二类样本的均值与方差。<br><br>
