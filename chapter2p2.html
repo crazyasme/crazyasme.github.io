@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 2</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>线性分类——线性判别分析</h1>
+                </header>
+
+                <p>
+                    我们已经介绍了最简单的线性分类模型，感知机模型，接下来我们将介绍线性判别分析模型（Linear Discriminant Analysis，LDA），也叫Fisher判别分析。注意这里要与NLP领域的LDA区分开，在NLP领域，LDA指隐含狄利克雷分布（Latent Dirichlet Allocation）。
+                </p>
+
+                <h4>基本思想</h4>
+
+                <p>LDA的基本思想为对样本进行降维，使类间距离最大，类间距离最小。</p>
+                <img src="images/LDA.png" alt=""/>
+
+                <h4>算法</h4>
+
+                <p>
+                    数据矩阵同前文说过的相同，这里不再赘述。假设我们找到了最好的投影方向，分类的得到的超平面为\(w^Tx\)，那么投影方向即超平面的法向量\(w\)，不妨限定\(|w|=1\)，这样可以避免\(w\)出现无数取值。对任一样本\(x_i\)，其在\(w\)上的投影\(z_i\)为
+                    \[z_i=w^Tx_i\]
+                    其均值\(\bar z\)为
+                    \[\bar z = \frac{1}{N}\sum_{i=1}^{N}w^Tx_i\]
+                    协方差\(S_z\)为
+                    \[S_z=\frac{1}{N}\sum_{i=1}^{N}(w^Tx_i-\bar z)(w^Tx_i-\bar z)^T\]
+                    不妨设集合\(C_1\)与\(C_2\)，分别包含两类的全部数据，那我们很容易得出以下的式子
+                    \[\begin{aligned}\bar z_1 &= \frac{1}{N_1}\sum_{i=1}^{N_1}w^Tx_i\\S_1&=\frac{1}{N_1}\sum_{i=1}^{N_1}(w^Tx_i-\bar z_1)(w^Tx_i-\bar z_1)^T\\\bar z_2 &= \frac{1}{N_2}\sum_{i=1}^{N_2}w^Tx_i\\S_2&=\frac{1}{N_2}\sum_{i=1}^{N_2}(w^Tx_i-\bar z_2)(w^Tx_i-\bar z_2)^T\end{aligned}\]
+                    那么为了表示类内和类间，我们可以使用如下的式子
+                    \[类间：(\bar z_1 - \bar z_2)^2\\类内：S_1+S_2\]
+                    为了使类内小，类间大，我们定义目标函数
+                    \[J(w)=\frac{(\bar z_1-\bar z_2)^2}{S_1+S_2}\tag{1}\]
+                    当\((1)\)式取得最大值，即是分母最小分子最大时，因此
+                    \[\hat w_{LDA}=arg\underset w max J(w)\tag{2}\]
+                    为了计算需要，我们可以将\((1)\)式化简。先来看分子
+                    \[\begin{aligned}分子&=(\frac{1}{N_1}\sum_{i=1}^{N_1}w^Tx_i-\frac{1}{N_2}\sum_{i=1}^{N_2}w^Tx_i)^2\\&=(w^T(\bar x_1-\bar x_2))^2\\&=w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw\end{aligned}\tag{3}\]
+                    然后看分母，首先我们需要化简\(S_1\)与\(S_2\)，两者形式相同，此处只写\(S_1\)
+                    \[\begin{aligned}S_1&=\frac{1}{N_1}\sum_{i=1}^{N_1}(w^Tx_i-\bar z_1)(w^Tx_i-\bar z_1)^T\\&=w^T(\frac{1}{N_1}(x_i-\bar x_{c1})(x_i-\bar x_{c1})^T)w\\&=w^TS_{C_1}w\end{aligned}\]
+                    于是有
+                    \[分母=w^T(S_{C_1}+S_{C_2})w\tag{4}\]
+                    综合\((2)\)、\((3)\)式，\((1)\)式可化简为
+                    J(w)=\frac{w^T(\bar x_1-\bar x_2)(\bar x_1-\bar x_2)^Tw}{w^T(S_{C_1}+S_{C_2})w}\tag{5}
+                    了解广义瑞利商的读者能够快速发现处理\((5)\)式的方式，我们这里仍然采用计算的方法。<br><br>
+                    我们将\((\bar x_1-\bar x_2)(\bar x_1 - \bar x_2)^T\)称为类间（Between-class）散度矩阵，记作\(S_b\)；将\(S_{C_1}+S_{C_2}\)称为类内（Within-class）散度矩阵，记作\(S_w\)。<br><br>
+                    自然地，对\(J(w)\)求偏导
+                    \[\frac{\partial J(w)}{\partial w}=2S_bw(w^TS_ww)^{-1}-2w^TS_bw(w^TS_bw)^{-2}S_ww\tag{6}\]
+                    令\((6)\)为\(0\)
+                    \[S_bw(w^TS_ww)=w^TS_bwS_ww\]
+                    通过对上式中向量维数的分析，不难发现\(w^TS_ww, w^TS_bw\in R\)，于是得到
+                    \[S_ww=\frac{w^TS_ww}{w^TS_bw}S_bw\]
+                    我们并不关心\(w\)的大小，只关心其方向，因为\(w^TS_ww\)和\(w^TS_bw\)都是正实数，对方向毫无影响，因此我们得到
+                    \[w\propto S_w^{-1}S_bw\\\begin{aligned}S_w^{-1}Sbw&=S_w(\bar x_1-\bar x_2)(\bar x_1 - \bar x_2)^Tw\end{aligned}\]
+                    同样通过分析维度，我们发现\((\bar x_1-\bar x_2)^Tw \in R\)，因此最终得到
+                    \[w\propto S_w^{-1}(\bar x_1-\bar x_2)\tag{7}\]
+                    也就是说，要想求得最佳投影方向\(w\)，我们只需要求得原始二类样本的均值与方差。<br><br>
+                    这就是线性判别分析。事实上LDA在线性分类中已经不再流行，因为其有着许多局限性，更多的应用是在降维上，不过这就是以后的内容了。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+			</style>
+	</body>
+</html>
