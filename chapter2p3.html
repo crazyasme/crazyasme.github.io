@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 2</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>线性分类——逻辑回归</h1>
+                </header>
+
+                <p>
+                    介绍了硬分类的两种模型，我们开始介绍一些软分类模型。<br><br>
+                    首先要介绍的是逻辑回归（Logisitc Regression）。虽然名为逻辑回归，但它事实上是一种线性分类。因为LR不是很难，所以我们只看一下它的主要思想。<br><br>
+                    首先介绍Sigmoid函数（Sigmoid Function），也叫做逻辑函数（Logistic Function），定义为
+                    \[S(x)=\frac{1}{1+exp\{-x\}}\tag{1}\]
+                    其图像为
+                </p>
+                <img src="images/Sigmoid.png" alt=""/>
+                <p>
+                    \[\lim_{x\to +\infty}S(x)=1\\\lim_{x\to 0}S(x)=\frac{1}{2}\\\lim_{x\to -\infty}S(x)=0\]
+                    通过这个函数，我们可以实现这样的映射
+                    \[R\mapsto (0,1)\\w^T\mapsto P\]
+                    考虑一个二分类问题，有数据
+                    \[D=\{(x_i,y_i)\}_{i=1}^N\\x\in R,y\in \{0,1\}\]
+                    我们知道\(w^Tx\)是连续的，不能用来拟合离散变量，我们考虑用它拟合条件概率\(P(y=1|x)\)。<br><br>
+                    最理想的当然是使用一个单位阶跃函数
+                    \[P(y=1|x)=\left\{\begin{aligned}&1\quad z>0\\&\frac{1}{2}\quad z=0\quad,z=w^Tx+b\\&0\quad z< 0\end{aligned}\right.\]
+                    然而这个函数不可微，因此我们常用Sigmoid函数替代。于是有
+                    <div id="overflow">
+                        \[\left\{\begin{aligned}&p_1=P(y=1|x)=S(w^Tx+b)=\frac{1}{1+exp\{-w^Tx+b\}}\quad &y=1\\&p_0=P(y=0|x)=S(w^Tx+b)=1-\frac{1}{1+exp\{-w^Tx+b\}}\quad &y=0\end{aligned}\right.\tag{2}\]
+                    </div>
+                    接下来就是熟悉的MLE
+                    <div id="overflow">
+                        \[\begin{aligned}\hat w_{MLE}&=arg\underset w maxlnP(y|x)\\&=arg\underset wmax\sum_{i=1}^N(y_ilnS(w^Tx_i+b)+(1-y_i)ln(1-S(w^Tx_i+b)))\\&=arg\underset w max\sum_{i=1}^N(y_iln(wx_i)-ln(1+exp\{wx_i\})\end{aligned}\]
+                    </div>
+                    接下来可以用多种方法处理，例如直接求导求解、正则化、SGD、牛顿法等，因为LR太简单，不再详细介绍。<br><br>
+                    注意上式中的
+                    <div id="overflow">
+                        \[\hat w_{MLE}=arg\underset wmax\sum_{i=1}^N(y_ilnS(w^Tx_i+b)+(1-y_i)ln(1-S(w^Tx_i+b)))\tag{3}\]
+                    </div>
+                    若我们将损失函数取为整个数据集上似然损失平均值的对数，则有
+                    <div id="overflow">
+                        \[J(w)=\frac{1}{N}\sum_{i=1}^N(y_ilnS(w^Tx_i+b)+(1-y_i)ln(1-S(w^Tx_i+b)))\tag{4}\]
+                    </div>
+                    即在逻辑回归模型中，最大化似然函数与最小化损失函数等价。值得关注的是\((4)\)式是交叉熵损失函数（Cross Entropy Error Function）（的相反数），在分类问题中常常会用到。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
