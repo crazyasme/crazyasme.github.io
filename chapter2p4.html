@@ -1,0 +1,148 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 2</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>线性分类——高斯判别分析</h1>
+                </header>
+
+                <h2>
+                    模型
+                </h2>
+                <p>
+                    依然考虑数据
+                    \[D=\{(x_i,y_i)\}_{i=1}^N\\x\in R,y\in \{0,1\}\]
+                    我们已经介绍了线性分类的几种判别式模型，简单来说他们可以概括为
+                    \[\hat y=arg\underset{y\in\{0,1\}}{max}P(y|x)\tag{1}\]
+                    而生成式模型则不同，我们其实并不关心\(P(y=1|x)\)与\(P(y=0|x)\)的具体数值，而只关心其大小关系，而根据贝叶斯定理
+                    \[P(y|x)=\frac{P(x|y)P(y)}{P(x)}\]
+                    其中，\(P(x)\)对大小关系没有影响，我们不去考虑。我们可以认为
+                    \[P(y|x)\propto P(x|y)P(y)\]
+                    其中，\(P(x|y)P(y)\)就是一个联合概率密度函数\(P(x,y)\)，因此，要得到我们的比较结果，只要对\(P(x,y)\)建模即可。既然用到了贝叶斯定理，我们自然想到，其中\(P(y|x)\)为后验，\(P(x|y)\)为似然，\(P(y)\)为先验。<br><br>
+                    于是，在生成式模型中，我们可以将\((1)\)式变为
+                    \[\hat y=arg\underset{y\in\{1,0\}}{max}P(x|y)P(y)\tag{2}\]
+                    首先我们给\(y\)一个先验
+                    \[y\sim Bernoulli（\phi）\\P(y)=\phi^y(1-\phi)^{1-y}\]
+                    似然为
+                    \[x|y=1\sim N(\mu_1,\Sigma)\]\[x|y=0\sim N(\mu_0,\Sigma)\]\[P(x|y)=N(\mu_1,\Sigma)^yN(\mu_2,\Sigma)^{1-y}\]
+                    这就是高斯判别分析（Gausse Discriminant Analysis，GDA）的基本模型。<br><br>
+                    我们定义一个似然函数，这里为了计算方便直接给出对数似然函数
+                    <div id="overflow">
+                        \[\begin{aligned}L(\theta)&=ln\prod_{i=1}^NP(x_i,y_i)\\&=\sum_{i=1}^Nln(P(x_i|y_i)P(y_i))\\&=\sum_{i=1}^N(lnP(x_i|y_i)+lnP(y_i))\\&=\sum_{i=1}^N(lnN(\mu_1,\Sigma)^{y_i}+lnN(\mu_2,\Sigma)^{1-y_i}+ln(\phi^{y_i}\phi^{1-y}))\end{aligned}\tag{3}\]
+                    </div>
+                    其中\(\theta=(\mu_1,\mu_0,\sigma,\phi)\)。
+                    \[\hat \theta=arg\underset \theta maxL(\theta)\]
+                </p>
+
+                <h2>
+                    求解
+                </h2>
+
+                <p>
+                    先来看\(\phi\)。观察\((3)\)式，\(\phi\)只与\(\sum_{i=1}^N ln(\phi^{y_i}\phi^{1-y})\)有关。
+                    \[\frac{\partial L(\theta)}{\partial \phi}=\sum_{i=1}^N(\frac{y_i}{\phi}-\frac{1-y_i}{1-\phi})\]
+                    令上式为\(0\)，有
+                    \[\sum_{i=1}^N(y_i-\phi)=0\\\hat \phi=\frac{1}{N}\sum_{i=1}^Ny_i\]
+                    我们注意到，\(y\)服从伯努利分布，令\(N_1\)个样本中\(y=1\)，\(N_0\)个样本中\(y=0\)，则上式可以继续简化为
+                    \[\hat \phi=\frac{N_1}{N}\tag{4}\]
+                    <br>
+                    接下来求\(\mu_1\)和\(\mu_0\)。观察\((3)\)式，\(\mu_1\)只与\(\sum_{i=1}^N lnN(\mu_1,\sigma)^{y_i}\)有关。
+                    <div id="overflow">
+                        \[\begin{aligned}&\sum_{i=1}^N lnN(\mu_1,\Sigma)^{y_i}\\=&\sum_{i=1}^N(y_iln(\frac{1}{(2\pi)^{\frac{2}{p}}|\Sigma|^\frac{1}{2}}exp\{-\frac{1}{2}(x_i-\mu_1)^T\Sigma^{-1}(x_i-\mu_1)\})\\=&-\frac{1}{2}\sum_{i=1}^N(y_i(x_i-\mu_1)^T\Sigma^{-1}(x_i-\mu_1))\end{aligned}\]
+                    </div>
+                    求偏导
+                    \[\frac{\partial L(\theta)}{\partial \mu_1}=-\frac{1}{2}\sum_{i=1}^N(y_i(-2\Sigma^{-1}x_i+2\Sigma^{-1}\mu_1))\]
+                    令上式为\(0\)，有
+                    \[\hat \mu_1=\frac{\sum_{i=1}^Ny_ix_i}{\sum_{i=1}^Ny_i}=\frac{\sum_{i=1}^Ny_ix_i}{N_1}\tag{5}\]
+                    根据对称性可以直接得到
+                    \[\hat \mu_0=\frac{\sum_{i=1}^N(1-y_i)x_i}{N_2}\tag{6}\]
+                    <br>
+                    最后求\(\Sigma\)。\(\Sigma\)与\(\sum_{i=1}^N(lnN(\mu_1,\Sigma)^{y_i}+lnN(\mu_2,\Sigma)^{1-y_i})\)有关。
+                    <div id="overflow">
+                        \[\begin{aligned}&\sum_{i=1}^NlnN(\mu,\Sigma)\\=&\sum_{i=1}^Nln\frac{1}{(2\pi)^{\frac{p}{2}}|\Sigma|^{\frac{1}{2}}}exp\{-\frac{1}{2}(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\}\\=&\sum_{i=1}^N\frac{1}{(2\pi)^{\frac{p}{2}}}-\frac{1}{2}Nln\Sigma-\frac{1}{2}\sum_{i=1}^N(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\end{aligned}\]
+                    </div>
+                    第三项通过分析维度可以发现是一个实数，可以通过矩阵的迹（Trace）继续化简
+                    \[\begin{aligned}&\sum_{i=1}^N(x_i-\mu)^T\Sigma^{-1}(x_i-\mu)\\=&\sum_{i=1}^Ntr((x_i-\mu)^T\Sigma^{-1}(x_i-\mu))\\=&tr(\sum_{i=1}^N(x_i-\mu)^T\Sigma^{-1}(x_i-\mu))\\=&tr(\sum_{i=1}^N(x_i-\mu)^T(x_i-\mu)\Sigma^{-1})\\=&Ntr(S\Sigma^{-1})\end{aligned}\]
+                    \(S\)为样本方差。我们将所有与\(\Sigma\)无关的项之和写作\(C\)
+                    \[\begin{aligned}&\sum_{i=1}^N(lnN(\mu_1,\Sigma)^{y_i}+lnN(\mu_2,\Sigma)^{1-y_i})\\=&-\frac{N}{2}ln|\Sigma|-\frac{N_1}{2}tr(S_1\Sigma^{-1})-\frac{N_1}{2}tr(S_1\Sigma^{-1})+C\end{aligned}\]
+                    求偏导
+                    \[\frac{\partial L(\theta)}{\partial \Sigma}=-\frac{1}{2}(N\Sigma^{-1}-N_1S_1^T\Sigma^{-1}-N_2S_2^T\Sigma^{-2})\]
+                    令上式为\(0\)
+                    \[\begin{aligned}\hat \Sigma&=\frac{1}{N}(N_1S_1+N_2S_2)\\&=\frac{1}{N}\sum_{i=1}{N}(x_i-\mu_{y_i})(x_i-\mu_{y_i})^T\end{aligned}\tag{7}\]
+                    这就是高斯判别分析模型。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
