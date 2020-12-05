@@ -1,0 +1,114 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>降维——样本均值、样本方差</h1>
+                </header>
+
+                <p>
+                    在《线性回归——正则化、岭回归》一节中，我们已经讨论了当数据或者说样本维数过高时，通常可以采用的三种方法
+                </p>
+
+                <ul>
+                    <li>增加数据</li>
+                    <li>特征选择/特征提取</li>
+                    <li>正则化</li>
+                </ul>
+
+                <p>
+                    其中第一点不必详细介绍，第三点已经在前文介绍，现在我们将开始介绍第二种方法——特征选择/特征提取。我们可以将这种方法称为降维。严谨地说，降维即在某些限定条件下，降低随机变量个数，得到一组“不相关”主变量的过程。<br><br>
+                    考虑样本
+                    \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}_{N\times p}\]
+                    我们用\(\bar X\)表示样本均值，有
+                    \[\bar X=\frac{1}{N}\sum_{i=1}^Nx_i\tag{1}\]
+                    用\(S\)表示样本协方差，有
+                    \[S=\frac{1}{N}\sum_{i=1}^N(x_i-\bar X)(x_i-\bar X)^T\tag{2}\]
+                    我们倾向于将平方表示为矩阵相乘的形式，是考虑到计算高维样本的方差使用平方运算并不严谨。<br><br>
+                    尝试将\((1)\)、\((2)\)式中的连加符号表示成其他形式。
+                    \[\begin{aligned}\bar X&=\frac{1}{N}(x_1,x_2,x_3\cdots x_N)_{p\times N}\begin{pmatrix}1\\1\\1\\\vdots\\1\end{pmatrix}_{N\times1}\\&=\frac{1}{N}X^T1_N\end{aligned}\tag{3}\]
+                    其中\(1_N=\begin{pmatrix}1\\1\\1\\\vdots\\1\end{pmatrix}_{N\times1}\)
+                    同理
+                    \[\begin{aligned}S&=\frac{1}{N}\sum_{i=1}^N((x_i)-(\bar X))((x_i)-(\bar X))^T\\&=\frac{1}{N}(X^T-\bar X1_N^T)(X^T-\bar X1_N^T)^T\\&=\frac{1}{N}(X^T-\frac{1}{N}X^T1_N1_N^T)(X^T-\frac{1}{N}X^T1_N1_N^T)^T\\&=\frac{1}{N}X^T(I_N-\frac{1}{N}1_N1_N^T)(I_N-\frac{1}{N}1_N1_N^T)^TX\\&=\frac{1}{N}X^THH^TX\end{aligned}\]
+                    其中\(H=I_N-\frac{1}{N}I_N1_N1_N^T\)。又有
+                    \[H^T=I_N-\frac{1}{N}1_N1_N^T=H\]
+                    \[\begin{aligned}HH^T&=(I_N-\frac{1}{N}1_N1_N^T)(I_N-\frac{1}{N}1_N1_N^T)\\&=I_N-\frac{2}{N}1_N1_N^T+\frac{1}{N^2}1_N1_N^T1_N1_N^T\\&=I_N-\frac{2}{N}1_N1_N^T+\frac{1}{N^2}1_NN1_N^T\\&=I_N-\frac{1}{N}1_N1_N^T\\&=H\end{aligned}\]
+                    所以最终可以得到
+                    \[S=\frac{1}{N}X^THX\tag{4}\]
+                    \((3)\)、\((4)\)式就是样本均值与样本方差的矩阵表示。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
