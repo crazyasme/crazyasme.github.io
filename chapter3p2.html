@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>降维——PCA（最大投影方差）</h1>
+                </header>
+
+                <p>
+                    PCA作为一种降维方式，就是从\(p\)维数据中提取最能代表这组数据的\(q\)个向量，提取特征。我们的目标为找到一个投影方向\(\mu\)，使得N个点在\(\mu\)上投影的方差最大（即每个向量彼此间包含的相似信息最少）。<br><br>
+                    为了简化计算，我们不妨令\(||\mu||_2=1\)<br><br>
+                    先考虑单个点，\(x_i\)在\(\mu\)上的投影为
+                    \[(x_i-\bar x)^T\mu\]
+                    我们知道\((x_i-\bar x)\)的均值为0，那么对于\(N\)个点，其方差为
+                    \[J=\frac 1 N\sum_{i=1}^N((x_i-\bar x)^T\mu)^2\]
+                    其中平方项为一标量，我们可以将其改写为
+                    \[J=\frac 1 N\sum_{i=1}^N\mu^T(x_i-\bar x)(x_i-\bar x)^T\mu\]
+                    发现中间两项即协方差，于是将上式改写为
+                    \[J=\mu^T S\mu\]
+                    于是我们的问题接下来就是一个在给定约束条件\(\mu^T\mu=1\)下的最优化问题。这里我们使用拉格朗日乘数法求解。
+                    \[L(\mu,H,\lambda)=\mu^TS\mu+\lambda(1-\mu^T\mu)\]
+                    求导
+                    \[\frac{\partial L}{\partial \mu}=2S\mu-2\lambda\mu\]
+                    令上式为\(0\)，可以得到
+                    \[S\mu=\lambda\mu\]
+                    我们发现，\(\lambda\)即S的特征值，\(\mu\)即S的特征向量。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
