@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>降维——从SVD角度看PCA和PCoA</h1>
+                </header>
+
+                <p>
+                    考虑一组我们已经很熟悉的数据
+                    <div id="overflow">
+                        \[X = \begin{pmatrix} x_1 & x_2 & x_3 & \cdots & x_N\end{pmatrix}^T = \begin{pmatrix} x_{1,1}&x_{1,2}&x_{1,3}&\cdots&x_{1,p}\\x_{2,1}&x_{2,2}&x_{2,3}&\cdots&x_{2,p}\\x_{3,1}&x_{3,2}&x_{3,3}&\cdots&x_{3,p}\\ \vdots&\vdots&\vdots&\ddots&\vdots\\x_{N,1}&x_{N,2}&x_{N,3}&\cdots&x_{N,p}\\\end{pmatrix}_{N\times p}\]
+                    </div>
+                    我们对其中心化（中心矩阵\(H\)已经在前文介绍），然后进行奇异值分解（Singular Value Decomposition，SVD）
+                    \[HX=U\Sigma V^T\]
+                    那么可以改写方差矩阵\(S\)
+                    \[\begin{aligned}S&=\frac 1 NX^THX\\&=\frac 1 N X^TH^THX\\&=\frac 1 N V\Sigma U^TU^T\Sigma V^T\end{aligned}\]
+                    SVD拥有这样的性质
+                    \[\begin{aligned}\left \{\begin{matrix}U^TU=I\\V^TV=VV^T=I\end{matrix}\right.\end{aligned}\]
+                    因此有
+                    \[S=V\Sigma^2V^T\tag{1}\]
+                    而\(S\)的特征值分解形式恰好是
+                    \[S=GKG^T\tag{2}\]
+                    \((1)\)、\((2)\)式在形式上恰好是相同的，有着一一对应的特性。因此我们发现，不一定需要用求方差矩阵\(S\)，我们事实上可以对数据矩阵\(X\)中心化并进行奇异值分解，依然可以得到同样的效果。<br><br>
+                    让我们更进一步，我们注意到，\(S=X^TH^THX\)，如果我们定义一个矩阵\(T\)
+                    \[\begin{aligned}T&=HXX^TH^T\\&=U\Sigma V^TV\Sigma U^T\\&=U\Sigma^2U^T\end{aligned}\tag{3}\]
+                    比较\((1)\)、\((3)\)式，我们不难发现，\(S\)与\(T\)有相同的特征值。
+                    鉴于\((1)\)、\((2)\)式得到的发现，我们不妨用\(V\)称呼\(S\)的特征向量（同时也是我们利用PCA得到的投影方向）。那么\(HXV\)即将\(X\)中心化后向V投影，得到的是新的正交基表示的新坐标。我们将它称为PCA，意在说明我们通过这种方式，得到的是新的投影方向（然后得到投影后的坐标）。
+                    而通过\((3)\)式体现出的思路，则可以直接得到新的坐标。
+                    \[T=U\Sigma^2U^T\]
+                    \[\begin{aligned}TU\Sigma&=U\Sigma^2U^TU\Sigma\\&=U\Sigma\Sigma^2\end{aligned}\]
+                    其中\(\Sigma^2\)是\(T\)的特征值矩阵，而\(U\Sigma\)是\(T\)的特征值组成的矩阵，上文提到的新坐标\(HXV\)可以改写
+                    \[HXV=U\Sigma V^TV=U\Sigma\]
+                    我们找到了一个奇特的结果。\(T\)背后的方法因而被称为主坐标分析（Principal Co-ordinates Analysis，PCoA）。分析\(S\)和\(T\)的维度可以发现，\(S\)为\(p\times p\)，\(T\)为\(N\times N\)，我们可以通过样本数和特征数的关系灵活地选用这两种方法。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
