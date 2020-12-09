@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>降维——PCA（最小重构代价）</h1>
+                </header>
+
+                <p>
+                    上一节我们从最大投影方差角度了解了PCA，这一节我们将从最小重构代价了解PCA这种降维方法。<br><br>
+                    这里仅考虑二维的情况，向量\(x_i\)可用\(x_1\)与\(x_2\)这组正交基表示，也可用\(u_1\)和\(u_2\)这组正交基表示。将\(x_i\)由\(x_1\)和\(x_2\)表示转换为用\(u_1\)和\(u_2\)表示，也就是重构到了\(u_p\)空间，PCA即为取\(q\)个最主要的方向。
+                </p>
+                <img src="images/reconsitution.png" alt="">
+                <p>
+                    不难看出，当加入约束条件\(||u_i||_2=1\)，有
+                    \[x_i=(x_i^Tu_1)u_1+(x_i^Tu_2)u_2\]
+                    推广到\(p\)维，有
+                    \[\hat x_i=\sum_{j=1}^p(x_i^ku_k)u_k\]
+                    加入约束条件并中心化，我们可以得到
+                    <div id="overflow">
+                        \[\begin{aligned}
+                        \left\{\begin{matrix}
+                        J=\frac{1}{n}\sum_{i=1}^{n}\left \| x_{i}-\sum_{k=1}^{q}((x^T_{i}-\bar x_{i})u_{k})u_{k} \right \|^2\\ 
+                        \\
+                        s.t.\;u^T_{k}u_{k}=1
+                        \end{matrix}\right.
+                        \end{aligned}\]
+                    </div>
+                    化简可以得到
+                    <div id="overflow">
+                        \[\begin{aligned}
+                        \left\{\begin{matrix}
+                        \hat U=\underset{U}{argmin}\sum_{k=q+1}^{p}U^T_{k}S^2U_{k}\\
+                        \\
+                        s.t.\;u^T_{k}u_{k}=1
+                        \end{matrix}\right.
+                        \end{aligned}\]
+                    </div>
+
+                    同样可以使用拉格朗日乘数法求解。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
