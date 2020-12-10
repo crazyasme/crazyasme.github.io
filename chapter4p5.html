@@ -1,0 +1,102 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+    <title>Chapter 3</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+
+    <!-- Wrapper -->
+    <div id="wrapper">
+
+        <!-- Nav -->
+        <nav id="nav">
+            <ul class="links">
+                <li class="active"><a href="index.html">文章</a></li>
+            </ul>
+            <ul class="icons">
+                <li><a href="https://twitter.com/TooCrazyAsMe" class="icon brands fa-twitter"><span
+                            class="label">Twitter</span></a></li>
+                <li><a href="https://github.com/crazyasme" class="icon brands fa-github"><span
+                            class="label">GitHub</span></a></li>
+            </ul>
+        </nav>
+
+        <!-- Main -->
+        <div id="main">
+
+            <!-- Post -->
+            <section class="post">
+                <header class="major">
+                    <h1>降维——概率角度</h1>
+                </header>
+
+                <p>
+                    接下来我们从概率角度看PCA，我们称为P-PCA（Probabilistic-PCA）。<br><br>
+                    假设样本为\(x\in R^p\)，目标为\(z\in R^q\)，其中\(q\leq p\)。我们给\(z\)一个先验
+                    \[\begin{aligned}\left\{\begin{matrix}z\sim N(0,I_q)\\x=Wz+\mu+\epsilon\\\epsilon\sim N(0,\sigma^2I_p)\end{matrix}\right.\end{aligned}\]
+                    这其实也是一个线性高斯模型。那么容易求得
+                    \[x|z\sim N(Wx+\mu,\sigma^2I)\]
+                    \[x\sim N(\mu,WW^T+\sigma^2I)\]
+                    用贝叶斯公式求解\(z|x\)，计算过程可能有些复杂
+                    \[z|x\sim N((W^TW+\sigma^2I)^{-1}W^T(x-\mu),\sigma^2M^{-1})\tag{1}\]
+                    对数似然函数为
+                    \[L=-\frac N 2(pln(2\pi)+ln|C|+tr(C^{-1}S))\tag{2}\]
+                    其中\(C=WW^T+\sigma^2I\)，\(S\)为方差。
+                    \[\hat W_{MLE}=U(\Lambda-\sigma^2I)^{1/2}R\tag{3}\]
+                    其中\(U_q\)是\(S\)的主特征向量，\(\Lambda\)是相应特征值组成的对角矩阵，\(R\)是一个正交旋转矩阵或是一个任意的\(q\times q\)矩阵。其他非主特征向量的组合对应着似然函数的鞍点。<br><br>
+                    在\(W=\hat W_{MLE}\)的情况下，
+                    \[\hat \sigma_{MLE}^2=\frac 1 {p-q}\sum_{j=q+1}^p \lambda_j\tag{4}\]
+                    显然对应着在降维过程中“丢失”的方差。<br><br>
+                    在实际应用中，我们会先利用\((4)\)式估计\(\hat \sigma_{MLE}^2\)，然后利用\((3)\)式估计\(\hat W_{MLE}\)，同时为了效率起见，预设\(R=I\)。当然，也可以使用最大期望算法（Expectation-maximization Algorithm，EM algorithm）对\(S\)求解。
+                </p>
+
+                <ul class="actions">
+                    <li>
+                        <a href="index.html" class="button">回到首页</a>
+                    </li>
+                </ul>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/jquery.scrolly.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+			<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+            <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+		
+			<style>
+				li{
+					left: 0;
+					right: 0;
+					margin: auto
+				}
+
+                #overflow{
+                    overflow: auto;
+                }
+
+                img{
+                    margin-left: auto;
+                    margin-right: auto;
+                    display:block;
+                    width: auto;
+                    max-width: 100%;
+                }
+			</style>
+	</body>
+</html>
