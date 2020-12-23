@@ -152,7 +152,7 @@
                     其中\(A\)、\(B\)、\(C\)均为固定值。对\(L(\lambda)\)求导，我们用\(\lambda_2^{new,unclipped}\)表示求导得到的\(\lambda_2\)。用下式对结果进行修剪
                     \[\begin{aligned}\lambda_2^{new}=\left\{\begin{aligned}&H& \lambda_2^{new,unclipped}>H\\&\lambda_2^{new,unclipped}& L\le\lambda_2^{new,unclipped}\le H\\&L& \lambda_2^{new,unclipped}< L\end{aligned}\right.\end{aligned}\]
                     这样我们可以得到一组\(\lambda_2^{new}\)和\(\lambda_1^{new}\)。继续选取下一组参数，最终即可求得\(\lambda^*\)。
-                    由反证法易得，\(\lambda^*\)中，\(\exist \lambda_j^*>0\)，那么有
+                    由反证法易得，\(\lambda^*\)中，\(\exists \lambda_j^*>0\)，那么有
                     \[y_j({w^T}^*x+b^*)-1=0\]
                     根据\((6)\)式，我们可以求得
                     \[\begin{aligned}&w^*=\sum_{i=1}^N\lambda_i^*y_ix_i\\&b^*=y_j-\sum_{i=1}^N\lambda_i^*y_i(x_ix_j)\end{aligned}\]
