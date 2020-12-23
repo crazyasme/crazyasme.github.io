@@ -97,27 +97,27 @@
                     </div>
                     所以可以把原问题转化为
                     <div id="overflow">
-                        \left\{\begin{aligned}&\underset{w,b}{min}\underset{\lambda}{max}L(w,b,\lambda)=\frac 1 2w^Tw+\sum_{i=1}^{N}\lambda_i(1-y_i(w^Tx_i+b))\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{3}
+                        \[\left\{\begin{aligned}&\underset{w,b}{min}\underset{\lambda}{max}L(w,b,\lambda)=\frac 1 2w^Tw+\sum_{i=1}^{N}\lambda_i(1-y_i(w^Tx_i+b))\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{4}\]
                     </div>
                     在这里，由于上述凸优化问题满足KKT条件（本章之后将会介绍），我们可利用强对偶性将其转化为
                     <div id="overflow">
-                        \[\left\{\begin{aligned}&\underset{\lambda}{max}\underset{w,b}{min}L(w,b,\lambda)=\frac 1 2w^Tw+\sum_{i=1}^{N}\lambda_i(1-y_i(w^Tx_i+b))\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{3}\]
+                        \[\left\{\begin{aligned}&\underset{\lambda}{max}\underset{w,b}{min}L(w,b,\lambda)=\frac 1 2w^Tw+\sum_{i=1}^{N}\lambda_i(1-y_i(w^Tx_i+b))\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{5}\]
                     </div>
                     自然地，求偏导，先对\(b\)求偏导并令其为\(0\)
                     \[\frac{\partial L}{\partial b}=-\sum_{i=1}^N\lambda_iy_i=0\]
                     可得到
-                    \[\sum_{i=1}^N\lambda_iy_i=0\tag{4}\]
+                    \[\sum_{i=1}^N\lambda_iy_i=0\tag{6}\]
                     将\((4)\)式代入\(L(w,b,\lambda)\)得到
                     <div id="overflow">
-                        \[\begin{aligned}L(w,b,\lambda)&=\frac 1 2w^Tw+\sum_{i=1}^N\lambda_i-\sum_{i=1}^N\lambda_iy_i(w^Tx_i+b)\\&=\frac 1 2 w^Tw+\sum_{i=1}^N\lambda_i-\sum_{i=1}^N\lambda_iy_iw^Tx_i\end{aligned}\tag{5}\]
+                        \[\begin{aligned}L(w,b,\lambda)&=\frac 1 2w^Tw+\sum_{i=1}^N\lambda_i-\sum_{i=1}^N\lambda_iy_i(w^Tx_i+b)\\&=\frac 1 2 w^Tw+\sum_{i=1}^N\lambda_i-\sum_{i=1}^N\lambda_iy_iw^Tx_i\end{aligned}\tag{7}\]
                     </div>
                     然后对\(w\)求偏导并令其为\(0\)
                     \[\frac {\partial L}{\partial w}=w-\sum_{i=1}^N\lambda_iy_ix_i=0\]
                     可得到
-                    \[w=\sum_{i=1}^N\lambda_iy_ix_i\tag{6}\]
+                    \[w=\sum_{i=1}^N\lambda_iy_ix_i\tag{8}\]
                     将\((6)\)式代入\((5)\)式，可得
                     <div id="overflow">
-                        \[L(\lambda)=-\frac 1 2\sum_{i=1}^N\sum_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum_{i=1}^N\lambda_i\tag{7}\]
+                        \[L(\lambda)=-\frac 1 2\sum_{i=1}^N\sum_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j+\sum_{i=1}^N\lambda_i\tag{9}\]
                     </div>
                     于是我们的问题转化为
                     <div id="overflow">
@@ -125,7 +125,7 @@
                     </div>
                     亦即
                     <div id="overflow">
-                        \[\left\{\begin{aligned}&\underset{\lambda}{min}\frac 1 2\sum_{i=1}^N\sum_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j-\sum_{i=1}^N\lambda_i\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{8}\]
+                        \[\left\{\begin{aligned}&\underset{\lambda}{min}\frac 1 2\sum_{i=1}^N\sum_{j=1}^N\lambda_i\lambda_jy_iy_jx_i^Tx_j-\sum_{i=1}^N\lambda_i\\&s.t. \quad \lambda_i\ge0\end{aligned}\right.\tag{10}\]
                     </div>
                     对于\((8)\)式的问题，我们有一些高效的算法求解得到\(\lambda^*\)，然后根据\(\lambda^*\)求得\(w\)和\(b\)，得到我们要求的超平面。这里我们将采用序列最小优化（Sequential Minimal Optimization, SMO）算法。<br><br>
                     SMO算法是一种启发式算法，其基本思想为：如果所有变量的解都满足此最优化问题的KKT条件，那么我们就找到了最优化问题的解。如果想要深入了解，最好的资料为《Sequential Minimal Optimization A Fast Algorithm for Training Support Vector Machines》（John C. Platt）。<br><br>
@@ -155,7 +155,7 @@
                     由反证法易得，\(\lambda^*\)中，\(\exists \lambda_j^*>0\)，那么有
                     \[y_j({w^T}^*x+b^*)-1=0\]
                     根据\((6)\)式，我们可以求得
-                    \[\begin{aligned}&w^*=\sum_{i=1}^N\lambda_i^*y_ix_i\\&b^*=y_j-\sum_{i=1}^N\lambda_i^*y_i(x_ix_j)\end{aligned}\]
+                    \[\begin{aligned}&w^*=\sum_{i=1}^N\lambda_i^*y_ix_i\\&b^*=y_j-\sum_{i=1}^N\lambda_i^*y_i(x_ix_j)\end{aligned}\tag{10}\]
                     于是不难发现支持向量机的一个重要性质：训练完成后，大部分的训练样本都不需要保留，最终模型仅与支持向量有关。
                 </p>
 
